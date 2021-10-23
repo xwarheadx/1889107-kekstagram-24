@@ -48,8 +48,10 @@ const createPost = () => {
         url: 'photos/' + ID_NUMBER_PHOTO.pop() + '.jpg',
         description: 'Это моё первое фото',
         likes: randomNumber(15, 200),
-        comments: Array.from({ length: 3 }, createComment),
+        comments: Array.from({ length: randomNumber(1, 10) }, createComment),
 
     }
 };
-export {createPost};
+const POSTS = 25;
+const createPhotos = () => Array.from({ length: POSTS }, createPost);
+export {createPhotos};
