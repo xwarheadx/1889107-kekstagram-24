@@ -52,6 +52,6 @@ const createPost = () => {
 
     }
 };
-const POSTS = 25;
+const POSTS = 19;
 const createPhotos = () => Array.from({ length: POSTS }, createPost);
 export {createPhotos};
