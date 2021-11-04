@@ -1,5 +1,7 @@
 import { hashtagText, commentTextarea } from './form.js';
 import { isEscapeKey } from './util.js';
+import { changeSize } from './imagesize.js';
+import './filters.js'
 const bodyIsVisible = document.querySelector('body');
 const uploadFile = document.querySelector('#upload-file');
 const imageEdit = document.querySelector('.img-upload__overlay');
@@ -11,6 +13,8 @@ const openEditForm = () => {
 
     document.addEventListener('keydown', onEditFormEscKeydown);
 };
+
+changeSize()
 
 const closeEditForm = () => {
     if (document.activeElement !== hashtagText && document.activeElement !== commentTextarea) {
