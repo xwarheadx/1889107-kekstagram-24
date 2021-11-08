@@ -1,4 +1,4 @@
-import {randomNumber} from './util.js'
+import { randomNumber } from './util.js'
 const NAMES = ['Иван',
     'Сергей',
     'Пётр',
@@ -41,17 +41,18 @@ const createComment = () => {
         name: NAMES[randomNameIndex],
     }
 };
-
+const randomComment = Array.from({ length: randomNumber(1, 10) }, createComment);
 const createPost = () => {
     return {
         id: ID_NUMBER.pop(),
+        avatar: 'img/avatar-' + randomNumber(1, 5) + '.svg',
         url: 'photos/' + ID_NUMBER_PHOTO.pop() + '.jpg',
         description: 'Это моё первое фото',
         likes: randomNumber(15, 200),
-        comments: Array.from({ length: randomNumber(1, 10) }, createComment),
+        comments: randomComment,
 
     }
 };
 const POSTS = 19;
-const createPhotos = () => Array.from({ length: POSTS }, createPost);
-export {createPhotos};
+const createPhotos = Array.from({ length: POSTS }, createPost);
+export { createPhotos, randomComment };
