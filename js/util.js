@@ -4,6 +4,6 @@ function randomNumber(min, max) {
         return Math.floor(RANDZ);
     } else { console.log('Ошибка!') }
 };
-export { randomNumber }
+
 const isEscapeKey = (evt) => evt.key === 'Escape';
-export { isEscapeKey }
+export { randomNumber, isEscapeKey}
