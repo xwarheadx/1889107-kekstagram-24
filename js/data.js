@@ -41,7 +41,7 @@ const createComment = () => {
         name: NAMES[randomNameIndex],
     }
 };
-const randomComment = Array.from({ length: randomNumber(1, 10) }, createComment);
+const randomComment = Array.from({ length: randomNumber(6, 10) }, createComment);
 const createPost = () => {
     return {
         id: ID_NUMBER.pop(),
