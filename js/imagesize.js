@@ -3,6 +3,11 @@ const imageScaleUp = document.querySelector('.scale__control--bigger');
 const imageScaleDown = document.querySelector('.scale__control--smaller');
 const imageScaleValue = document.querySelector('.scale__control--value');
 
+const setDefaultSize = () => {
+    imageScaleValue.value = '100%';
+    imagePreview.style.transform = `scale(${1})`;
+  };
+
 const changeSize = () => {
     let defaultSize = 100;
     imageScaleUp.addEventListener('click', () => {
@@ -21,4 +26,4 @@ const changeSize = () => {
         }
     })
 };
-export { changeSize };
+export { changeSize, setDefaultSize };

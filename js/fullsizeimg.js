@@ -1,68 +1,65 @@
-import { createPhotos, randomComment } from './data.js';
-import { isEscapeKey } from './util.js';
+import { isEscapeKey, bodyModalOpen, bodyModalClose } from './utils.js';
 const fullSizeImg = document.querySelector('.big-picture');
-const commentTemplate = document.querySelector('#comment').content;
 const commentsFullImg = fullSizeImg.querySelector('.social__comments');
 const moreComments = fullSizeImg.querySelector('.social__comments-loader');
 const countOfComments = fullSizeImg.querySelector('.social__comment-count');
-let currentCommentCount = 0;
-let currentComment = [];
+const commentTemplate = commentsFullImg.querySelector('.social__comment');
+const MAX_COMMENTS = 5;
 
-function appendComments(randomComment, start, step) {
-    const listNotesFragment = document.createDocumentFragment();
-    const stop = step + start;
-    randomComment.slice(start, stop).forEach(({ avatar, message, name }) => {
-        const commentElement = commentTemplate.cloneNode(true);
-        commentElement.querySelector('.social__picture').src = avatar;
-        commentElement.querySelector('.social__text').textContent = message;
-        commentElement.querySelector('.social__picture').alt = name;
-        listNotesFragment.appendChild(commentElement);
-    });
+const clearComments = () => {
+  commentsFullImg.innerHTML = '';
+};
 
-    commentsFullImg.appendChild(listNotesFragment);
-    let countComment = randomComment.length;
-    if (randomComment.length <= stop) {
-        moreComments.classList.add('hidden');
-    } else {
-        moreComments.classList.remove('hidden');
-        countComment = stop;
-    }
-    countOfComments.innerHTML = `${countComment} из <span class="comments-count">${randomComment.length}</span> комментариев`;
-    currentCommentCount = stop;
+clearComments();
+
+const appendComments = (comment) => {
+  const commentElement = commentTemplate.cloneNode(true);
+  commentElement.classList.add('hidden');
+  commentElement.querySelector('.social__picture').src = `${comment.avatar}`;
+  commentElement.querySelector('.social__picture').alt = `${comment.name}`;
+  commentElement.querySelector('.social__text').textContent = `${comment.message}`;
+  commentsFullImg.append(commentElement);
+};
+
+const showComments = () => {
+  const hiddenComments = commentsFullImg.querySelectorAll('.social__comment.hidden');
+  Array.from(hiddenComments).slice(0, MAX_COMMENTS).forEach((comment) => comment.classList.remove('hidden'));
+  const allCommnets = commentsFullImg.querySelectorAll('.social__comment');
+  const allOpenedComments = commentsFullImg.querySelectorAll('.social__comment:not(.hidden)');
+  if (allCommnets.length === allOpenedComments.length) {
+    moreComments.classList.add('hidden');
+  } else {
+    moreComments.classList.remove('hidden');
+  }
+  countOfComments.innerHTML = `Показано ${allOpenedComments.length} из <span class="comments-count">${allCommnets.length}</span> комментариев`;
+};
+const createFullSizeImg = (picture) => {
+  fullSizeImg.classList.remove('hidden');
+  bodyModalOpen();
+  fullSizeImg.querySelector('.big-picture__img img').src = `${picture.url}`;
+  fullSizeImg.querySelector('.likes-count').textContent = `${picture.likes}`;
+  fullSizeImg.querySelector('.social__caption').textContent = `${picture.description}`;
+  commentsFullImg.innerHTML = '';
+  picture.comments.forEach(appendComments);
+  showComments();
 }
+const openFullSizeImg = (evt, picture) => {
+  evt.preventDefault();
+  createFullSizeImg(picture);
 
-function openFullSizeImg(item) {
-    const createFullSizeImg = createPhotos;
-    const closeFullSizeImg = document.querySelector('.big-picture__cancel');
+  const closeFullSizeImg = document.querySelector('.big-picture__cancel');
+  closeFullSizeImg.addEventListener('click', () => {
+    fullSizeImg.classList.add('hidden');
+    bodyModalClose();
+    clearComments();
+  });
 
-    createFullSizeImg.forEach(({ id, avatar, url, comments, likes, description }) => {
-        if (id === item) {
-            currentCommentCount = 0;
-            currentComment = randomComment;
-            fullSizeImg.classList.remove('hidden');
-            fullSizeImg.querySelector('.big-picture__img img').src = url;
-            fullSizeImg.querySelector('.likes-count').textContent = likes;
-            fullSizeImg.querySelector('.social__caption').textContent = description;
-            fullSizeImg.querySelector('.social__header img').src = avatar;
-            commentsFullImg.innerHTML = '';
-            appendComments(randomComment, currentCommentCount, 5);
-            document.body.classList.add('modal-open');
-        }
-    });
-
-    closeFullSizeImg.addEventListener('click', () => {
-        fullSizeImg.classList.add('hidden');
-        document.body.classList.remove('modal-open');
-    });
-
-    document.addEventListener('keydown', (evt) => {
-        if (isEscapeKey(evt)) {
-            fullSizeImg.classList.add('hidden');
-            document.body.classList.remove('modal-open');
-        }
-    });
-    moreComments.addEventListener('click', () => {
-        appendComments(currentComment, currentCommentCount, 5);
-    });
+  document.addEventListener('keydown', (evt) => {
+    if (isEscapeKey(evt)) {
+      fullSizeImg.classList.add('hidden');
+      bodyModalClose();
+    }
+  });
+  moreComments.addEventListener('click', showComments);
 }
 export { openFullSizeImg };
