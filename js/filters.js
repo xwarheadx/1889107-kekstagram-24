@@ -1,4 +1,4 @@
-import './nouislider/nouislider.js'
+import './nouislider.js'
 const imagePreview = document.querySelector('.img-upload__preview');
 const effectSlider = document.querySelector('.effect-level__slider');
 const effectValue = document.querySelector('.effect-level__value');
@@ -99,23 +99,8 @@ const onFilterChange = (evt) => {
         imagePreview.classList.add('img-upload__preview');
         imagePreview.classList.add(`effects__preview--${selectedFilter}`);
         effectSlider.classList.remove('hidden');
-        if (selectedFilter === 'chrome') {
-            applyFilter(FILTERS.chrome);
-        }
-        else if (selectedFilter === 'sepia') {
-            applyFilter(FILTERS.sepia);
-        }
-        else if (selectedFilter === 'marvin') {
-            applyFilter(FILTERS.marvin);
-        }
-        else if (selectedFilter === 'phobos') {
-            applyFilter(FILTERS.phobos);
-        }
-        else if (selectedFilter === 'heat') {
-            applyFilter(FILTERS.heat);
-        }
-    }
-    else {
+        applyFilter(FILTERS[selectedFilter]);
+    } else {
         imagePreview.className = '';
         imagePreview.classList.add('img-upload__preview');
         hideFilter(effectSlider);
@@ -131,5 +116,5 @@ const setDefaultFilter = () => {
     imagePreview.classList.add('img-upload__preview');
     hideFilter(effectSlider);
     imagePreview.style.filter = '';
-  };
-export{setDefaultFilter}
+};
+export { setDefaultFilter }

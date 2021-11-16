@@ -6,6 +6,8 @@ const pictureTemplate = document.querySelector('#picture').content.querySelector
 const pictureListFragment = document.createDocumentFragment();
 const generatePhotos = (photos) => {
     photos.forEach((photo) => {
+        const thumbnails = document.querySelectorAll('.picture');
+        thumbnails.forEach((element) => element.remove());
         const pictureElement = pictureTemplate.cloneNode(true);
         pictureElement.querySelector('.picture__img').src = `${photo.url}`;
         pictureElement.querySelector('.picture__likes').textContent = `${photo.likes}`;

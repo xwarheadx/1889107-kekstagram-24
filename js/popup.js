@@ -1,7 +1,7 @@
 import { validateDescription, validateHashTags, hashtagText, commentTextarea } from './form.js';
 import { isEscapeKey, bodyModalOpen, bodyModalClose } from './utils.js';
-import { changeSize, setDefaultSize} from './imagesize.js';
-import {setDefaultFilter} from './filters.js'
+import { changeSize, setDefaultSize } from './imagesize.js';
+import { setDefaultFilter } from './filters.js'
 import { sendData } from './api.js';
 import { renderSuccessMessage, renderErrorMessage } from './alert.js';
 const uploadFile = document.querySelector('#upload-file');

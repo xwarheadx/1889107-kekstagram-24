@@ -54,4 +54,4 @@ const validateHashTags = () => {
         hashtagText.reportValidity();
     });
 };
-export { hashtagText, commentTextarea, validateDescription, validateHashTags};
+export { hashtagText, commentTextarea, validateDescription, validateHashTags };
