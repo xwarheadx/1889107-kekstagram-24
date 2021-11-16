@@ -6,7 +6,7 @@ const imageScaleValue = document.querySelector('.scale__control--value');
 const setDefaultSize = () => {
     imageScaleValue.value = '100%';
     imagePreview.style.transform = `scale(${1})`;
-  };
+};
 
 const changeSize = () => {
     let defaultSize = 100;
