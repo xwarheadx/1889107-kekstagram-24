@@ -32,21 +32,21 @@ const onMessageEscKeydown = (evt) => {
     closeMessageModal();
   }
 };
-const onDocumentEvent = (evt) => {
+const onMessageClick = (evt) => {
   if (!evt.target.closest('.success__inner') && !evt.target.closest('.error__inner')) {
     closeMessageModal();
   }
 };
 
-function closeMessageModal () {
+const closeMessageModal = () => {
   const messageModal = document.querySelector('.success') || document.querySelector('.error');
   if (messageModal) {
     messageModal.remove();
   }
 
-  document.removeEventListener('click', onDocumentEvent);
+  document.removeEventListener('click', onMessageClick);
   document.removeEventListener('keydown', onMessageEscKeydown);
-}
+};
 
 const renderSuccessMessage = () => {
   const messageModal = successTemplate.cloneNode(true);
@@ -56,8 +56,8 @@ const renderSuccessMessage = () => {
   messageModalButton.addEventListener('click', () => {
     closeMessageModal();
   });
-  document.addEventListener('click', onDocumentEvent);
-  document.addEventListener('keydown', onDocumentEvent);
+  document.addEventListener('click', onMessageClick);
+  document.addEventListener('keydown', onMessageClick);
 };
 
 const renderErrorMessage = () => {
@@ -68,8 +68,8 @@ const renderErrorMessage = () => {
   messageModalButton.addEventListener('click', () => {
     closeMessageModal();
   });
-  document.addEventListener('click', onDocumentEvent);
-  document.addEventListener('keydown', onDocumentEvent);
+  document.addEventListener('click', onMessageClick);
+  document.addEventListener('keydown', onMessageClick);
 };
 
 export {showLoadAlert, renderSuccessMessage, renderErrorMessage};

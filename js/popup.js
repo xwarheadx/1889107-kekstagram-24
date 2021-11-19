@@ -1,7 +1,7 @@
-import { validateDescription, validateHashTags, hashtagText, commentTextarea } from './form.js';
+import { validateDescription, validateHashTags, clearDescription } from './form.js';
 import { isEscapeKey, bodyModalOpen, bodyModalClose } from './utils.js';
-import { changeSize, setDefaultSize } from './imagesize.js';
-import { setDefaultFilter } from './filters.js'
+import { changeSize, setDefaultSize } from './image-size.js';
+import { setDefaultFilter } from './filters.js';
 import { sendData } from './api.js';
 import { renderSuccessMessage, renderErrorMessage } from './alert.js';
 const uploadFile = document.querySelector('#upload-file');
@@ -10,51 +10,51 @@ const imageEditClose = imageEdit.querySelector('#upload-cancel');
 const imageForm = document.querySelector('#upload-select-image');
 
 const openEditForm = () => {
-    imageEdit.classList.remove('hidden');
-    bodyModalOpen();
-    setDefaultSize();
-    setDefaultFilter()
-    hashtagText.addEventListener('input', validateHashTags);
-    commentTextarea.addEventListener('input', validateDescription)
-    document.addEventListener('keydown', onEditFormEscKeydown);
+  imageEdit.classList.remove('hidden');
+  bodyModalOpen();
+  changeSize();
+  validateDescription();
+  validateHashTags();
+  document.addEventListener('keydown', onEditFormEscKeydown);
 };
-changeSize()
+
 const closeEditForm = () => {
-    imageEdit.classList.add('hidden');
-    commentTextarea.value = '';
-    hashtagText.value = '';
-    uploadFile.value = '';
-    bodyModalClose();
-    document.removeEventListener('keydown', onEditFormEscKeydown);
+  imageEdit.classList.add('hidden');
+  uploadFile.value = '';
+  clearDescription();
+  bodyModalClose();
+  setDefaultSize();
+  setDefaultFilter();
+  document.removeEventListener('keydown', onEditFormEscKeydown);
 };
 
 const onEditFormEscKeydown = (evt) => {
-    if (isEscapeKey(evt)) {
-        evt.preventDefault();
-        closeEditForm();
-    }
-}
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    closeEditForm();
+  }
+};
 
 uploadFile.addEventListener('change', (evt) => {
-    openEditForm();
+  openEditForm();
 });
 
 
 imageEditClose.addEventListener('click', () => {
-    closeEditForm();
+  closeEditForm();
 });
 
 const setImageFormSubmit = (onSuccess) => {
-    imageForm.addEventListener('submit', (evt) => {
-        evt.preventDefault();
+  imageForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
 
-        sendData(
-            () => renderSuccessMessage(),
-            () => renderErrorMessage(),
-            new FormData(evt.target),
-        );
+    sendData(
+      () => renderSuccessMessage(),
+      () => renderErrorMessage(),
+      new FormData(evt.target),
+    );
 
-        onSuccess();
-    });
+    onSuccess();
+  });
 };
 export { setImageFormSubmit, closeEditForm };

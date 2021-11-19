@@ -1,10 +1,10 @@
 import { isEscapeKey, bodyModalOpen, bodyModalClose } from './utils.js';
+const MAX_COMMENTS = 5;
 const fullSizeImg = document.querySelector('.big-picture');
 const commentsFullImg = fullSizeImg.querySelector('.social__comments');
 const moreComments = fullSizeImg.querySelector('.social__comments-loader');
 const countOfComments = fullSizeImg.querySelector('.social__comment-count');
 const commentTemplate = commentsFullImg.querySelector('.social__comment');
-const MAX_COMMENTS = 5;
 
 const clearComments = () => {
   commentsFullImg.innerHTML = '';
@@ -42,24 +42,30 @@ const createFullSizeImg = (picture) => {
   commentsFullImg.innerHTML = '';
   picture.comments.forEach(appendComments);
   showComments();
-}
+};
+const onPostEscKeydown = (evt) => {
+  if (isEscapeKey(evt)) {
+    fullSizeImg.classList.add('hidden');
+    bodyModalClose();
+    clearComments();
+    document.removeEventListener('keydown', onPostEscKeydown);
+  }
+};
 const openFullSizeImg = (evt, picture) => {
   evt.preventDefault();
   createFullSizeImg(picture);
+  document.addEventListener('keydown', onPostEscKeydown);
+
 
   const closeFullSizeImg = document.querySelector('.big-picture__cancel');
   closeFullSizeImg.addEventListener('click', () => {
     fullSizeImg.classList.add('hidden');
     bodyModalClose();
     clearComments();
+    document.removeEventListener('keydown', onPostEscKeydown);
   });
 
-  document.addEventListener('keydown', (evt) => {
-    if (isEscapeKey(evt)) {
-      fullSizeImg.classList.add('hidden');
-      bodyModalClose();
-    }
-  });
   moreComments.addEventListener('click', showComments);
-}
+
+};
 export { openFullSizeImg };

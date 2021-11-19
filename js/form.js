@@ -6,52 +6,58 @@ const hashtagText = document.querySelector('.text__hashtags');
 const commentTextarea = document.querySelector('.text__description');
 
 const validateDescription = () => {
+  commentTextarea.addEventListener('input', () => {
     if (commentTextarea.value.length > MAX_COMMENT_LENGTH) {
-        commentTextarea.setCustomValidity('Длина комментария не может составлять больше 140 символов');
+      commentTextarea.setCustomValidity('Длина комментария не может составлять больше 140 символов');
     } else {
-        commentTextarea.setCustomValidity('');
+      commentTextarea.setCustomValidity('');
     }
     commentTextarea.reportValidity();
+  });
 };
 
 const validateHashTags = () => {
-    hashtagText.addEventListener('input', () => {
-        hashtagText.value = hashtagText.value.toLowerCase().replace(/\s+/g, ' ');
-        const hashtagArray = hashtagText.value.split(' ');
-        const errorArray = [];
-        const hasDuplicates = hashtagArray.some((item) => hashtagArray.indexOf(item) !== hashtagArray.lastIndexOf(item));
-        hashtagArray.forEach((tag) => {
-            if (!tag.startsWith('#')) {
-                errorArray.push('Хештеги должны начинаться с "#" и отделяться пробелом');
-            }
-            if (tag === '') {
-                errorArray.length = 0;
-            }
-            if (tag === '#') {
-                errorArray.push('Хештег не может состоять только из "#');
-            }
-            if (!hashtagIsValid.test(tag)) {
-                errorArray.push('Хештеги должны состоять только из букв и чисел');
-            }
-            if (tag.length > HASHTAG_LENGTH) {
-                errorArray.push(`Хештег не может быть длиннее ${HASHTAG_LENGTH} символов`);
-            }
-            if (hasDuplicates) {
-                errorArray.push('Хештеги не могут повторяться');
-            }
-            if (hashtagArray.length > HASHTAG_NUMBER) {
-                errorArray.push(`Нельзя добавлять более ${HASHTAG_NUMBER} хештегов`);
-            }
-        });
-        if (hashtagArray[0] === '') {
-            hashtagText.value = hashtagText.value.trim();
-            hashtagText.setCustomValidity('');
-        } else if (errorArray.length === 0) {
-            hashtagText.setCustomValidity('');
-        } else {
-            hashtagText.setCustomValidity(errorArray[0]);
-        }
-        hashtagText.reportValidity();
+  hashtagText.addEventListener('input', () => {
+    hashtagText.value = hashtagText.value.toLowerCase().replace(/\s+/g, ' ');
+    const hashtagsArray = hashtagText.value.split(' ');
+    const errorsArray = [];
+    const hasDuplicates = hashtagsArray.some((item) => hashtagsArray.indexOf(item) !== hashtagsArray.lastIndexOf(item));
+    if (hasDuplicates) {
+      errorsArray.push('Хештеги не могут повторяться');
+    }
+    if (hashtagsArray.length > HASHTAG_NUMBER) {
+      errorsArray.push(`Нельзя добавлять более ${HASHTAG_NUMBER} хештегов`);
+    }
+    hashtagsArray.forEach((tag) => {
+      if (!tag.startsWith('#')) {
+        errorsArray.push('Хештеги должны начинаться с "#" и отделяться пробелом');
+      }
+      if (tag === '') {
+        errorsArray.length = 0;
+      }
+      if (tag === '#') {
+        errorsArray.push('Хештег не может состоять только из "#');
+      }
+      if (!hashtagIsValid.test(tag)) {
+        errorsArray.push('Хештеги должны состоять только из букв и чисел');
+      }
+      if (tag.length > HASHTAG_LENGTH) {
+        errorsArray.push(`Хештег не может быть длиннее ${HASHTAG_LENGTH} символов`);
+      }
     });
+    if (hashtagsArray[0] === '') {
+      hashtagText.value = hashtagText.value.trim();
+      hashtagText.setCustomValidity('');
+    } else if (errorsArray.length === 0) {
+      hashtagText.setCustomValidity('');
+    } else {
+      hashtagText.setCustomValidity(errorsArray[0]);
+    }
+    hashtagText.reportValidity();
+  });
 };
-export { hashtagText, commentTextarea, validateDescription, validateHashTags };
+const clearDescription = () => {
+  commentTextarea.value = '';
+  hashtagText.value = '';
+};
+export { validateDescription, validateHashTags, clearDescription };
