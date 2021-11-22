@@ -19,39 +19,39 @@ const validateDescription = () => {
 const validateHashTags = () => {
   hashtagText.addEventListener('input', () => {
     hashtagText.value = hashtagText.value.toLowerCase().replace(/\s+/g, ' ');
-    const hashtagsArray = hashtagText.value.split(' ');
-    const errorsArray = [];
-    const hasDuplicates = hashtagsArray.some((item) => hashtagsArray.indexOf(item) !== hashtagsArray.lastIndexOf(item));
+    const allHashtags = hashtagText.value.split(' ');
+    const hashtagsErrors = [];
+    const hasDuplicates = allHashtags.some((item) => allHashtags.indexOf(item) !== allHashtags.lastIndexOf(item));
     if (hasDuplicates) {
-      errorsArray.push('Хештеги не могут повторяться');
+      hashtagsErrors.push('Хештеги не могут повторяться');
     }
-    if (hashtagsArray.length > HASHTAG_NUMBER) {
-      errorsArray.push(`Нельзя добавлять более ${HASHTAG_NUMBER} хештегов`);
+    if (allHashtags.length > HASHTAG_NUMBER) {
+      hashtagsErrors.push(`Нельзя добавлять более ${HASHTAG_NUMBER} хештегов`);
     }
-    hashtagsArray.forEach((tag) => {
+    allHashtags.forEach((tag) => {
       if (!tag.startsWith('#')) {
-        errorsArray.push('Хештеги должны начинаться с "#" и отделяться пробелом');
+        hashtagsErrors.push('Хештеги должны начинаться с "#" и отделяться пробелом');
       }
       if (tag === '') {
-        errorsArray.length = 0;
+        hashtagsErrors.length = 0;
       }
       if (tag === '#') {
-        errorsArray.push('Хештег не может состоять только из "#');
+        hashtagsErrors.push('Хештег не может состоять только из "#');
       }
       if (!hashtagIsValid.test(tag)) {
-        errorsArray.push('Хештеги должны состоять только из букв и чисел');
+        hashtagsErrors.push('Хештеги должны состоять только из букв и чисел');
       }
       if (tag.length > HASHTAG_LENGTH) {
-        errorsArray.push(`Хештег не может быть длиннее ${HASHTAG_LENGTH} символов`);
+        hashtagsErrors.push(`Хештег не может быть длиннее ${HASHTAG_LENGTH} символов`);
       }
     });
-    if (hashtagsArray[0] === '') {
+    if (allHashtags[0] === '') {
       hashtagText.value = hashtagText.value.trim();
       hashtagText.setCustomValidity('');
-    } else if (errorsArray.length === 0) {
+    } else if (hashtagsErrors.length === 0) {
       hashtagText.setCustomValidity('');
     } else {
-      hashtagText.setCustomValidity(errorsArray[0]);
+      hashtagText.setCustomValidity(hashtagsErrors[0]);
     }
     hashtagText.reportValidity();
   });
@@ -59,5 +59,7 @@ const validateHashTags = () => {
 const clearDescription = () => {
   commentTextarea.value = '';
   hashtagText.value = '';
+  commentTextarea.removeEventListener('input', validateDescription);
+  hashtagText.removeEventListener('input', validateHashTags);
 };
 export { validateDescription, validateHashTags, clearDescription };

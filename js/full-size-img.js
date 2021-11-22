@@ -6,12 +6,6 @@ const moreComments = fullSizeImg.querySelector('.social__comments-loader');
 const countOfComments = fullSizeImg.querySelector('.social__comment-count');
 const commentTemplate = commentsFullImg.querySelector('.social__comment');
 
-const clearComments = () => {
-  commentsFullImg.innerHTML = '';
-};
-
-clearComments();
-
 const appendComments = (comment) => {
   const commentElement = commentTemplate.cloneNode(true);
   commentElement.classList.add('hidden');
@@ -68,4 +62,10 @@ const openFullSizeImg = (evt, picture) => {
   moreComments.addEventListener('click', showComments);
 
 };
+const clearComments = () => {
+  commentsFullImg.value = '';
+  moreComments.removeEventListener('click', showComments);
+};
+
+clearComments();
 export { openFullSizeImg };

@@ -1,4 +1,4 @@
-import { randomNumber } from './utils.js';
+import { getRandomNumber } from './utils.js';
 const FILTERED_THUMBS = 10;
 const thumbnailFilter = document.querySelector('.img-filters');
 const thumbnailFilterForm = thumbnailFilter.querySelector('.img-filters__form');
@@ -6,7 +6,7 @@ const thumbnailFilterButtons = thumbnailFilterForm.querySelectorAll('.img-filter
 
 thumbnailFilter.classList.remove('img-filters--inactive');
 
-const getRandomThumbnail = (array, count) => array.slice().sort(() => randomNumber(0, array.length) - randomNumber(0, array.length)).slice(0, count);
+const getRandomThumbnail = (array, count) => array.slice().sort(() => getRandomNumber(0, array.length) - getRandomNumber(0, array.length)).slice(0, count);
 
 const sortThumbnails = (array, value) => array.slice().sort((firstElement, secondElement) => secondElement[value].length - firstElement[value].length);
 
@@ -30,5 +30,5 @@ const applyFilters = (data, render) => {
     render(newData);
   });
 };
-
+thumbnailFilterForm.removeEventListener('click',applyFilters);
 export { applyFilters };

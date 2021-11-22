@@ -1,29 +1,38 @@
+const SCALE_STEP = 25;
+const MAX_SCALE = 100;
+const MIN_SCALE = 25;
 const imagePreview = document.querySelector('.img-upload__preview');
 const imageScaleUp = document.querySelector('.scale__control--bigger');
 const imageScaleDown = document.querySelector('.scale__control--smaller');
 const imageScaleValue = document.querySelector('.scale__control--value');
 
-const setDefaultSize = () => {
-  imageScaleValue.value = '100%';
-  imagePreview.style.transform = `scale(${1})`;
+const toScaleUp = () => {
+  let newScaleValue = parseInt(imageScaleValue.value, 10) + SCALE_STEP;
+  if (newScaleValue > MAX_SCALE) {
+    newScaleValue = MAX_SCALE;
+  }
+  imageScaleValue.value = `${newScaleValue}%`;
+  imagePreview.style.transform = `scale(${newScaleValue}%)`;
+};
+
+const toScaleDown = () => {
+  let newScaleValue = parseInt(imageScaleValue.value, 10) - SCALE_STEP;
+  if (newScaleValue < MIN_SCALE) {
+    newScaleValue = MIN_SCALE;
+  }
+  imageScaleValue.value = `${newScaleValue}%`;
+  imagePreview.style.transform = `scale(${newScaleValue}%)`;
 };
 
 const changeSize = () => {
-  let DEFAULT_SIZE = 100;
-  imageScaleUp.addEventListener('click', () => {
-    if (DEFAULT_SIZE <= 75) {
-      DEFAULT_SIZE += 25;
-      imageScaleValue.value = `${DEFAULT_SIZE}%`;
-      imagePreview.style.transform = `scale(${DEFAULT_SIZE / 100})`;
-    }
-  });
+  imageScaleUp.addEventListener('click', toScaleUp);
+  imageScaleDown.addEventListener('click', toScaleDown);
+};
 
-  imageScaleDown.addEventListener('click', () => {
-    if (DEFAULT_SIZE >= 50) {
-      DEFAULT_SIZE -= 25;
-      imageScaleValue.value = `${DEFAULT_SIZE}%`;
-      imagePreview.style.transform = `scale(${DEFAULT_SIZE / 100})`;
-    }
-  });
+const setDefaultSize = () => {
+  imageScaleValue.value = `${100}%`;
+  imagePreview.style.transform = `scale(${1})`;
+  imageScaleDown.removeEventListener('click', changeSize);
+  imageScaleUp.removeEventListener('click', changeSize);
 };
 export { changeSize, setDefaultSize };
