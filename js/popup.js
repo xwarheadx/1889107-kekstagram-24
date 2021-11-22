@@ -26,6 +26,7 @@ const closeEditForm = () => {
   setDefaultSize();
   setDefaultFilter();
   document.removeEventListener('keydown', onEditFormEscKeydown);
+  imageEditClose.removeEventListener('click', closeEditForm);
 };
 
 const onEditFormEscKeydown = (evt) => {
@@ -35,7 +36,7 @@ const onEditFormEscKeydown = (evt) => {
   }
 };
 
-uploadFile.addEventListener('change', (evt) => {
+uploadFile.addEventListener('change', () => {
   openEditForm();
 });
 

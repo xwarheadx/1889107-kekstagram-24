@@ -120,5 +120,6 @@ const setDefaultFilter = () => {
   hideFilter(effectSlider);
   imagePreview.style.filter = '';
   defaultFilterChecked.checked = true;
+  effectsList.removeEventListener('change', changeFilter);
 };
 export { setDefaultFilter };

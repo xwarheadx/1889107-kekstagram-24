@@ -16,8 +16,9 @@ const generatePhotos = (photos) => {
     pictureElement.addEventListener('click', (evt) => {
       openFullSizeImg(evt, photo);
     });
-
+    pictureElement.removeEventListener('click', generatePhotos);
   });
   picturesListElement.appendChild(pictureListFragment);
 };
+
 export { generatePhotos };
