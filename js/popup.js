@@ -29,12 +29,12 @@ const closeEditForm = () => {
   imageEditClose.removeEventListener('click', closeEditForm);
 };
 
-const onEditFormEscKeydown = (evt) => {
+function onEditFormEscKeydown(evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     closeEditForm();
   }
-};
+}
 
 uploadFile.addEventListener('change', () => {
   openEditForm();

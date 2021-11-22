@@ -5,6 +5,7 @@ const commentsFullImg = fullSizeImg.querySelector('.social__comments');
 const moreComments = fullSizeImg.querySelector('.social__comments-loader');
 const countOfComments = fullSizeImg.querySelector('.social__comment-count');
 const commentTemplate = commentsFullImg.querySelector('.social__comment');
+const closeFullSizeImg = document.querySelector('.big-picture__cancel');
 
 const appendComments = (comment) => {
   const commentElement = commentTemplate.cloneNode(true);
@@ -27,6 +28,12 @@ const showComments = () => {
   }
   countOfComments.innerHTML = `Показано ${allOpenedComments.length} из <span class="comments-count">${allCommnets.length}</span> комментариев`;
 };
+
+const clearComments = () => {
+  commentsFullImg.value = '';
+  moreComments.removeEventListener('click', showComments);
+};
+
 const createFullSizeImg = (picture) => {
   fullSizeImg.classList.remove('hidden');
   bodyModalOpen();
@@ -37,6 +44,7 @@ const createFullSizeImg = (picture) => {
   picture.comments.forEach(appendComments);
   showComments();
 };
+
 const onPostEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     fullSizeImg.classList.add('hidden');
@@ -45,26 +53,22 @@ const onPostEscKeydown = (evt) => {
     document.removeEventListener('keydown', onPostEscKeydown);
   }
 };
+
+const closeFullSizeImgClickHandler = () => {
+  fullSizeImg.classList.add('hidden');
+  bodyModalClose();
+  clearComments();
+  document.removeEventListener('keydown', onPostEscKeydown);
+};
+
+closeFullSizeImg.addEventListener('click', closeFullSizeImgClickHandler);
+
 const openFullSizeImg = (evt, picture) => {
   evt.preventDefault();
   createFullSizeImg(picture);
   document.addEventListener('keydown', onPostEscKeydown);
 
-
-  const closeFullSizeImg = document.querySelector('.big-picture__cancel');
-  closeFullSizeImg.addEventListener('click', () => {
-    fullSizeImg.classList.add('hidden');
-    bodyModalClose();
-    clearComments();
-    document.removeEventListener('keydown', onPostEscKeydown);
-  });
-
   moreComments.addEventListener('click', showComments);
-
-};
-const clearComments = () => {
-  commentsFullImg.value = '';
-  moreComments.removeEventListener('click', showComments);
 };
 
 clearComments();

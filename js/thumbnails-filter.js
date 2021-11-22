@@ -30,5 +30,5 @@ const applyFilters = (data, render) => {
     render(newData);
   });
 };
-thumbnailFilterForm.removeEventListener('click',applyFilters);
+thumbnailFilterForm.removeEventListener('click', applyFilters);
 export { applyFilters };

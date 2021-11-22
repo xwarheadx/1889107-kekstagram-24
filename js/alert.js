@@ -38,7 +38,7 @@ const onMessageClick = (evt) => {
   }
 };
 
-const closeMessageModal = () => {
+function closeMessageModal() {
   const messageModal = document.querySelector('.success') || document.querySelector('.error');
   if (messageModal) {
     messageModal.remove();
@@ -46,7 +46,7 @@ const closeMessageModal = () => {
 
   document.removeEventListener('click', onMessageClick);
   document.removeEventListener('keydown', onMessageEscKeydown);
-};
+}
 
 const renderSuccessMessage = () => {
   const messageModal = successTemplate.cloneNode(true);
